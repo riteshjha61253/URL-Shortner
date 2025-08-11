@@ -10,22 +10,21 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.error(err));
 
-
 app.use("/api", require("./routes/url"));
 
-
 if (process.env.NODE_ENV === "production") {
-  const frontendPath = path.join(__dirname, "../Url-Shoortner/dist"); 
+  const frontendPath = path.join(__dirname, "../Url-Shoortner/dist");
+
+
   app.use(express.static(frontendPath));
 
   app.get("*", (req, res) => {
-    res.sendFile(path.join(frontendPath, "index.html"));
+    res.sendFile(path.resolve(frontendPath, "index.html"));
   });
 }
 
